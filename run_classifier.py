@@ -298,14 +298,24 @@ class SentimentProcessor(DataProcessor):
 
   def _create_examples(self, lines, set_type):
     """Creates examples for the training and dev sets."""
+    labels = ["negative", "neutral", "positive"]
     examples = []
     for (i, line) in enumerate(lines):
       if i == 0:
         continue
       guid = "%s-%s" % (set_type, i)
-      text_a = tokenization.convert_to_unicode(line[1])
+      label_curr = tokenization.convert_to_unicode(line[1])
+      if label_curr in labels:
+        text_a = label_curr
+      else:
+        continue
+
+      if set_type == "test":
+        label = "negative"
+      else:
+        label = tokenization.convert_to_unicode(line[0])
+
       text_b = None
-      label = tokenization.convert_to_unicode(line[0])
       examples.append(
           InputExample(guid=guid, text_a=text_a, text_b=text_b, label=label))
     return examples
