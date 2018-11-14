@@ -304,9 +304,10 @@ class SentimentProcessor(DataProcessor):
       if i == 0:
         continue
       guid = "%s-%s" % (set_type, i)
-      label_curr = tokenization.convert_to_unicode(line[1])
+      text_a = tokenization.convert_to_unicode(line[1])
+      label_curr = tokenization.convert_to_unicode(line[0])
       if label_curr in labels:
-        text_a = label_curr
+        label = label_curr
       else:
         continue
 
