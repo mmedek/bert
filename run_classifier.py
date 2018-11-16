@@ -158,6 +158,10 @@ class InputFeatures(object):
 class DataProcessor(object):
   """Base class for data converters for sequence classification data sets."""
 
+  def get_test_examples_foregin(self, data_dir, filename):
+    """Gets a collection of `InputExample`s for the train set."""
+    raise NotImplementedError()
+
   def get_train_examples(self, data_dir):
     """Gets a collection of `InputExample`s for the train set."""
     raise NotImplementedError()
@@ -277,9 +281,9 @@ class SentimentProcessor(DataProcessor):
   """Processor for the Sentiment data set (FB dataset)."""
 
   # read testing data from foregin languages
-  def get_test_examples_foregin(self, data_dir, file):
+  def get_test_examples_foregin(self, data_dir, filename):
     return self._create_examples(
-        self._read_tsv(os.path.join(data_dir, file)), "foregin")
+        self._read_tsv(os.path.join(data_dir, filename)), "foregin")
 
   def get_train_examples(self, data_dir):
     """See base class."""
