@@ -283,7 +283,7 @@ class SentimentProcessor(DataProcessor):
   # read testing data from foregin languages
   def get_test_examples_foregin(self, data_dir, filename):
     return self._create_examples(
-        self._read_tsv(os.path.join(data_dir, filename)), "foregin")
+        self._read_tsv(os.path.join(data_dir, filename)), "test")
 
   def get_train_examples(self, data_dir):
     """See base class."""
