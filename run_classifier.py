@@ -25,6 +25,7 @@ import modeling
 import optimization
 import tokenization
 import tensorflow as tf
+import pandas as pd
 
 flags = tf.flags
 
@@ -283,32 +284,43 @@ class SentimentProcessor(DataProcessor):
   # read testing data from foregin languages
   def get_test_examples_foregin(self, data_dir, filename):
     return self._create_examples(
-        self._read_tsv(os.path.join(data_dir, filename)), "test")
+        self._read_json(os.path.join(data_dir, filename)), "test")
 
   def get_train_examples(self, data_dir):
     """See base class."""
     return self._create_examples(
-        self._read_tsv(os.path.join(data_dir, "train.tsv")), "train")
+        self._read_json(os.path.join(data_dir, "train.jsonl")), "train")
 
   def get_dev_examples(self, data_dir):
     """See base class."""
     return self._create_examples(
-        self._read_tsv(os.path.join(data_dir, "dev.tsv")),
-        "dev_matched")
+        self._read_json(os.path.join(data_dir, "dev.jsonl")), "dev_matched")
 
   def get_test_examples(self, data_dir):
     """See base class."""
     return self._create_examples(
-        self._read_tsv(os.path.join(data_dir, "test.tsv")), "test")
+        self._read_json(os.path.join(data_dir, "test.jsonl")), "test")
 
   def get_labels(self):
     """See base class."""
     return ["negative", "neutral", "positive"]
 
+  @classmethod
+  def _read_json(cls, input_file, quotechar=None):
+    """Reads a tab separated value file."""
+    df = pd.read_json(input_file, orient='records', lines=True)
+
+    lines = []
+    for index, row in df.iterrows():
+      lines.append([row['sentiment'], row['text']])
+
+    return lines
+
   def _create_examples(self, lines, set_type):
     """Creates examples for the training and dev sets."""
     examples = []
     for (i, line) in enumerate(lines):
+      print(line)
       if i == 0:
         continue
       guid = "%s-%s" % (set_type, i)
