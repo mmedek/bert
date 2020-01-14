@@ -339,7 +339,6 @@ class SentimentProcessor(DataProcessor):
     """Creates examples for the training and dev sets."""
     examples = []
     for (i, line) in enumerate(lines):
-      print(line)
       if i == 0:
         continue
       guid = "%s-%s" % (set_type, i)
@@ -828,7 +827,7 @@ def convert_examples_to_features(examples, label_list, max_seq_length,
 
   features = []
   for (ex_index, example) in enumerate(examples):
-    if ex_index % 10000 == 0:
+    if ex_index % 100000 == 0:
       tf.logging.info("Writing example %d of %d" % (ex_index, len(examples)))
 
     feature = convert_single_example(ex_index, example, label_list,
